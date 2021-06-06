@@ -1,7 +1,8 @@
 import React, {useState, useEffect} from "react";
 import MoviePoster from "./MoviePoster";
+import {URL_dbJSON} from "./urls";
 
-function App() {
+function MovieApp() {
     const [db, setDb] = useState({})
     const [list, setList] = useState([])
     const [inputOptions, setInputOptions] = useState([])
@@ -10,14 +11,13 @@ function App() {
     const [buttons, setButtons] = useState([])
 
     useEffect(() => {
-        fetch('mvdb.json')
+        fetch(URL_dbJSON)
             .then(res => {
                 return res.json()
             })
             .then(res => {
                 setDb(res)
                 setList(Object.keys(res))
-                console.log('passed here')
             })
     }, [])
 
@@ -54,7 +54,7 @@ function App() {
                 {/*<datalist id="search-options">*/}
                 {/*    {inputOptions}*/}
                 {/*</datalist>*/}
-                <input id="search-box" type="text" list="search-options" placeholder="Search Movies" onChange={onSearchInputChange}/>
+                <input id="search-box" type="text" list="search-options" placeholder={`Search ${list.length} Movies`} onChange={onSearchInputChange}/>
 
                 <div className="buttons-container">
                     {buttons}
@@ -70,4 +70,4 @@ function App() {
     );
 }
 
-export default App;
+export default MovieApp;

@@ -5,8 +5,10 @@ const URL_pageTMDB = "https://themoviedb.org/movie/";
 const URL_searchGoogle = "https://play.google.com/store/search?c=movies&q=";
 const URL_searchFandango = "https://www.fandangonow.com/#search=";
 const URL_searchIMDB = "https://www.imdb.com/find?q=";
+const URL_dbJSON = `${process.env.PUBLIC_URL}/mvdb.json`
 
 export {
+    URL_dbJSON,
     URL_pageIMDB,
     URL_searchIMDB,
     URL_pageTMDB,
