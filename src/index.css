@@ -30,9 +30,17 @@ input {
     background: linear-gradient(to top, lightgray 0%, white 100%);
 }
 
-.search-bar {
+.controls-bar {
     background-color: lightgray;
     justify-content: center;
+}
+
+.button-controls {
+    display: flex;
+    padding: 3px 0;
+}
+.button-control {
+    margin: auto;
 }
 
 .app {
@@ -42,6 +50,7 @@ input {
 }
 
 .gallery {
+    display: flex;
     flex: 1 1 auto;
     flex-wrap: wrap;
     width: 100%;
@@ -53,13 +62,12 @@ input {
     display: inline-flex;
     flex-wrap: wrap;
     justify-content: center;
-    padding: 0 10%;
+    padding: 0 5%;
 }
 
 .poster {
     display: inline-flex;
     flex: 1 1 auto;
-    justify-content: space-between;
     max-height: 250px;
     padding: 5px;
     margin: 0;
@@ -67,7 +75,7 @@ input {
 
 @media (orientation: portrait) {
     .poster {
-        max-height: 150px;
+        max-height: 175px;
         padding: 5px;
     }
     .posters-container {
