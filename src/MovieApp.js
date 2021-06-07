@@ -42,13 +42,17 @@ function MovieApp() {
     useEffect(() => {
         setPosters(titlesList.map(
             (movie, index) => {
-                return <MoviePoster key={index} src={db[movie].poster} visible={posterIsVisible[index]}/>
+                return <MoviePoster key={index} src={db[movie].poster} visible={posterIsVisible[index]} title={movie}
+                                    click={setSearchTitle}/>
             }))
         setButtons(() => {
-            return [
-                <button key={"btn-ctrl-1"} className={"button-control"} onClick={clickRandom}>Random</button>,
-                <button key={"btn-ctrl-2"} className={"button-control"}>Advanced Search</button>
-            ]
+            return (
+                <div className={"button-controls"}>
+                    <button key={"btn-ctrl-1"} className={"button-control"} onClick={clickRandom}>Random</button>
+                    <button key={"btn-ctrl-2"} className={"button-control"} onClick={() => setSearchTitle("")}>Clear</button>
+                    <button key={"btn-ctrl-3"} className={"button-control"}>Advanced Search</button>
+                </div>
+            )
         })
     }, [posterIsVisible])
 
@@ -77,7 +81,9 @@ function MovieApp() {
 
     const searchByTime = function (maxTime) {
         // return timesList.map(time => {return time < searchTime})
-        return timesList.map(time => {return time < maxTime})
+        return timesList.map(time => {
+            return time < maxTime
+        })
     }
 
     const clickRandom = function (event) {
@@ -90,11 +96,9 @@ function MovieApp() {
                 <h2>Hales Movie Archive</h2>
 
                 <TitleSearch list={titlesList} value={searchTitle} set={setSearchTitle}/>
-                <TimeSearch list={timesList} value={searchTime} set={setSearchTime} />
+                <TimeSearch list={timesList} value={searchTime} set={setSearchTime}/>
 
-                <div className="button-controls">
-                    {buttons}
-                </div>
+                {buttons}
             </div>
 
             <div className="gallery">

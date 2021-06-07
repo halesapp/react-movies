@@ -21,11 +21,12 @@ h2 {
 }
 
 .button-controls {
-    display: flex;
     padding: 3px 0;
+    text-align: center;
 }
 .button-control {
-    margin: auto;
+    margin: 2px;
+    padding: 2px 1em;
 }
 
 .app {
@@ -51,19 +52,7 @@ h2 {
     width: 80%;
 }
 
-.poster {
-    display: inline-flex;
-    flex: 1 1 auto;
-    max-height: 250px;
-    padding: 5px;
-    margin: 0;
-}
-
 @media (orientation: portrait) {
-    .poster {
-        max-height: 175px;
-        padding: 5px;
-    }
     .posters-container {
         padding: 0;
         width: 100%;
