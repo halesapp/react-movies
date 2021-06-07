@@ -17,7 +17,7 @@ function MovieApp() {
     const [timesList, setTimesList] = useState([])
 
     const [posters, setPosters] = useState([])
-    const [posterIsVisible, setPosterIsVisible] = useState([])
+    const [postersVisible, setPostersVisible] = useState([])
 
     const [searchTime, setSearchTime] = useState(0)
     const [searchTitle, setSearchTitle] = useState("")
@@ -34,7 +34,7 @@ function MovieApp() {
     }, [])
 
     useEffect(() => {
-        setPosterIsVisible(Array(titlesList.length).fill(true))
+        setPostersVisible(Array(titlesList.length).fill(true))
 
         setTimesList(titlesList.map(item => {
             return Number(db[item].time)
@@ -43,10 +43,10 @@ function MovieApp() {
     useEffect(() => {
         setPosters(titlesList.map(
             (movie, index) => {
-                return <MoviePoster key={index} src={db[movie].poster} visible={posterIsVisible[index]} title={movie}
+                return <MoviePoster key={index} src={db[movie].poster} visible={postersVisible[index]} title={movie}
                                     click={setSearchTitle}/>
             }))
-    }, [posterIsVisible])
+    }, [postersVisible])
 
     useEffect(() => {
         let titleMatches
@@ -56,7 +56,7 @@ function MovieApp() {
             titleMatches = searchByTitle(searchTitle)
         }
         const timeMatches = searchByTime(searchTime)
-        setPosterIsVisible(titleMatches.map((item, index) => {
+        setPostersVisible(titleMatches.map((item, index) => {
             return item && timeMatches[index]
         }))
     }, [searchTitle, searchTime])
@@ -87,7 +87,7 @@ function MovieApp() {
         <div className="app">
             <div className="controls-bar">
                 <h2>Hales Movie Database</h2>
-                <TitleSearch list={titlesList} value={searchTitle} set={setSearchTitle}/>
+                <TitleSearch list={titlesList} value={searchTitle} set={setSearchTitle} count={postersVisible.filter(Boolean).length}/>
                 <TimeSearch list={timesList} value={searchTime} set={setSearchTime}/>
                 <div className={"buttons-container"}>
                     <SearchButtons clickRandom={clickRandom} setSearchTitle={setSearchTitle}/>
