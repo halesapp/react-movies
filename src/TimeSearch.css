@@ -1,0 +1,18 @@
+.time-search-box {
+    display: flex;
+    align-items: center;
+    width: 60%;
+    text-align: center;
+    height: 2em;
+    margin: auto;
+    padding: 5px;
+    justify-content: center;
+}
+.time-search-input {
+    width: 75%;
+}
+@media (orientation: portrait) {
+    .time-search-box {
+        width: 90%;
+    }
+}

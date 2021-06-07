@@ -1,18 +1,24 @@
 import React, {useState, useEffect} from "react";
+
 import MoviePoster from "./MoviePoster";
+import TitleSearch from "./TitleSearch"
+import TimeSearch from "./TimeSearch";
+
 import {URL_dbJSON} from "./urls";
+
+import './MovieApp.css';
+
 
 function MovieApp() {
     const [db, setDb] = useState({})
     const [titlesList, setTitlesList] = useState([])
+    const [timesList, setTimesList] = useState([])
 
     const [posters, setPosters] = useState([])
     const [posterIsVisible, setPosterIsVisible] = useState([])
 
-    const [timesList, setTimesList] = useState([])
-    const [timeFilterValue, setTimeFilterValue] = useState(0)
-
-    const [searchBarValue, setSearchBarValue] = useState("")
+    const [searchTime, setSearchTime] = useState(0)
+    const [searchTitle, setSearchTitle] = useState("")
     const [buttons, setButtons] = useState([])
 
     useEffect(() => {
@@ -28,11 +34,11 @@ function MovieApp() {
 
     useEffect(() => {
         setPosterIsVisible(Array(titlesList.length).fill(true))
+
         setTimesList(titlesList.map(item => {
-            return db[item].time
+            return Number(db[item].time)
         }))
     }, [titlesList])
-
     useEffect(() => {
         setPosters(titlesList.map(
             (movie, index) => {
@@ -47,16 +53,20 @@ function MovieApp() {
     }, [posterIsVisible])
 
     useEffect(() => {
-        if (searchBarValue === "") {
+        if (searchTitle === "") {
             setPosterIsVisible(Array(titlesList.length).fill(true))
             return
         }
-        const titleMatches = searchByTitle(searchBarValue)
-        const timeMatches = searchByTime()
+        const titleMatches = searchByTitle(searchTitle)
+        const timeMatches = searchByTime(searchTime)
         setPosterIsVisible(titleMatches.map((item, index) => {
             return item && timeMatches[index]
         }))
-    }, [searchBarValue, timeFilterValue])
+    }, [searchTitle, searchTime])
+
+    useEffect(() => {
+
+    }, [timesList])
 
     const searchByTitle = function (searchStr) {
         // `.replace` on searchStr encodes regex special characters with backslashes
@@ -65,13 +75,13 @@ function MovieApp() {
         return titlesList.map(item => regexString.test(item))
     }
 
-    const searchByTime = function () {
-        // return timesList.map(time => {return time < timeFilterValue})
-        return timesList.map(time => {return time < timeFilterValue})
+    const searchByTime = function (maxTime) {
+        // return timesList.map(time => {return time < searchTime})
+        return timesList.map(time => {return time < maxTime})
     }
 
     const clickRandom = function (event) {
-        setSearchBarValue(titlesList[Math.floor(Math.random() * titlesList.length)])
+        setSearchTitle(titlesList[Math.floor(Math.random() * titlesList.length)])
     }
 
     return (
@@ -79,11 +89,8 @@ function MovieApp() {
             <div className="controls-bar">
                 <h2>Hales Movie Archive</h2>
 
-                <input id="search-box" type="text" placeholder={`Search ${titlesList.length} Movies`}
-                       onChange={event => {setSearchBarValue(event.target.value)}} value={searchBarValue}/>
-                <label>{timeFilterValue}, {Math.max(...timesList)}</label>
-                <input id={"time-slider"} type={"range"} min={0} max={Math.max(...timesList)}
-                       onChange={event => {setTimeFilterValue(event.target.value)}} value={timeFilterValue}/>
+                <TitleSearch list={titlesList} value={searchTitle} set={setSearchTitle}/>
+                <TimeSearch list={timesList} value={searchTime} set={setSearchTime} />
 
                 <div className="button-controls">
                     {buttons}

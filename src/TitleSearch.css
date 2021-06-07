@@ -1,0 +1,19 @@
+.title-search-box {
+    display: block;
+    width: 60%;
+    text-align: center;
+    height: 2em;
+    margin: 4px auto;
+    padding: 0;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    border-bottom: none;
+    background-color: whitesmoke;
+}
+
+@media (orientation: portrait) {
+    .title-search-box {
+        width: 90%;
+    }
+}
