@@ -1,12 +1,14 @@
 import React, {useState, useEffect} from "react";
 
-import MoviePoster from "./MoviePoster";
 import TitleSearch from "./TitleSearch"
 import TimeSearch from "./TimeSearch";
+import SearchButtons from "./SearchButtons";
+import MoviePoster from "./MoviePoster";
 
 import {URL_dbJSON} from "./urls";
 
 import './MovieApp.css';
+import WatchButtons from "./WatchButtons";
 
 
 function MovieApp() {
@@ -19,7 +21,6 @@ function MovieApp() {
 
     const [searchTime, setSearchTime] = useState(0)
     const [searchTitle, setSearchTitle] = useState("")
-    const [buttons, setButtons] = useState([])
 
     useEffect(() => {
         fetch(URL_dbJSON)
@@ -45,23 +46,15 @@ function MovieApp() {
                 return <MoviePoster key={index} src={db[movie].poster} visible={posterIsVisible[index]} title={movie}
                                     click={setSearchTitle}/>
             }))
-        setButtons(() => {
-            return (
-                <div className={"button-controls"}>
-                    <button key={"btn-ctrl-1"} className={"button-control"} onClick={clickRandom}>Random</button>
-                    <button key={"btn-ctrl-2"} className={"button-control"} onClick={() => setSearchTitle("")}>Clear</button>
-                    <button key={"btn-ctrl-3"} className={"button-control"}>Advanced Search</button>
-                </div>
-            )
-        })
     }, [posterIsVisible])
 
     useEffect(() => {
+        let titleMatches
         if (searchTitle === "") {
-            setPosterIsVisible(Array(titlesList.length).fill(true))
-            return
+            titleMatches = Array(titlesList.length).fill(true)
+        } else {
+            titleMatches = searchByTitle(searchTitle)
         }
-        const titleMatches = searchByTitle(searchTitle)
         const timeMatches = searchByTime(searchTime)
         setPosterIsVisible(titleMatches.map((item, index) => {
             return item && timeMatches[index]
@@ -93,12 +86,13 @@ function MovieApp() {
     return (
         <div className="app">
             <div className="controls-bar">
-                <h2>Hales Movie Archive</h2>
-
+                <h2>Hales Movie Database</h2>
                 <TitleSearch list={titlesList} value={searchTitle} set={setSearchTitle}/>
                 <TimeSearch list={timesList} value={searchTime} set={setSearchTime}/>
-
-                {buttons}
+                <div className={"buttons-container"}>
+                    <SearchButtons clickRandom={clickRandom} setSearchTitle={setSearchTitle}/>
+                    <WatchButtons movie={searchTitle} db={db}/>
+                </div>
             </div>
 
             <div className="gallery">

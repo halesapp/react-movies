@@ -20,13 +20,8 @@ h2 {
     justify-content: center;
 }
 
-.button-controls {
-    padding: 3px 0;
-    text-align: center;
-}
-.button-control {
-    margin: 2px;
-    padding: 2px 1em;
+.buttons-container {
+    padding-bottom: 4px;
 }
 
 .app {

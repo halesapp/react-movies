@@ -38,7 +38,7 @@
     color: rgba(0,0,0,0);
     text-align: center;
 }
-.poster-wrapper:focus:after {
+.poster-wrapper:hover:after {
     background: rgba(123, 227, 234, 0.9);
     color: rgba(0,0,0,1);
 }
