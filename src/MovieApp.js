@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from "react";
 
-import ControlsModal from "./ControlsModal"
+import OptionsModal from "./OptionsModal"
 import TitleSearch from "./TitleSearch";
 import TimeSearch from "./TimeSearch";
 import SearchButtons from "./SearchButtons";
@@ -131,7 +131,7 @@ function MovieApp() {
 
     return (
         <div className="app">
-            <ControlsModal visible={modalVisible} toggleModal={toggleModal} localItem={localStorageItem} fetchDB={fetchDataBase}/>
+            <OptionsModal visible={modalVisible} toggleModal={toggleModal} localItem={localStorageItem} fetchDB={fetchDataBase}/>
 
             <div className="controls-bar">
                 <h2>Hales Movie Database</h2>

@@ -30,4 +30,4 @@ const OptionsModal = function (props) {
 
 }
 
-export default ControlsModal
+export default OptionsModal
