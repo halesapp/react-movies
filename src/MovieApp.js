@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from "react";
 
-import TitleSearch from "./TitleSearch"
+import ControlsModal from "./ControlsModal"
+import TitleSearch from "./TitleSearch";
 import TimeSearch from "./TimeSearch";
 import SearchButtons from "./SearchButtons";
 import MoviePoster from "./MoviePoster";
@@ -21,6 +22,8 @@ function MovieApp() {
 
     const [searchTime, setSearchTime] = useState(0)
     const [searchTitle, setSearchTitle] = useState("")
+
+    const [modalVisible, setModalVisible] = useState(false)
 
     const localStorageItem = "halesMovieDB"
 
@@ -120,16 +123,23 @@ function MovieApp() {
         setSearchTitle(titlesList[Math.floor(Math.random() * titlesList.length)])
     }
 
+    const toggleModal = function () {
+        setModalVisible(prevState => {
+            return !prevState
+        })
+    }
+
     return (
         <div className="app">
+            <ControlsModal visible={modalVisible} toggleModal={toggleModal} localItem={localStorageItem} fetchDB={fetchDataBase}/>
+
             <div className="controls-bar">
                 <h2>Hales Movie Database</h2>
                 <TitleSearch list={titlesList} value={searchTitle} set={setSearchTitle}
                              count={postersVisible.filter(Boolean).length}/>
                 <TimeSearch list={timesList} value={searchTime} set={setSearchTime}/>
                 <div className={"buttons-container"}>
-                    <SearchButtons clickRandom={clickRandom} setSearchTitle={setSearchTitle}
-                                   localItem={localStorageItem} fetchDB={fetchDataBase}/>
+                    <SearchButtons clickRandom={clickRandom} setSearchTitle={setSearchTitle} toggleModal={toggleModal}/>
                     <WatchButtons movie={searchTitle} db={db}/>
                 </div>
             </div>
