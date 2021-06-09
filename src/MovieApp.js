@@ -25,17 +25,39 @@ function MovieApp() {
     useEffect(() => {
         fetch(URL_dbJSON)
             .then(res => {
-                return res.json()
+                return res.text()
             })
-            .then(res => {
-                setDb(res)
-                setTitlesList(Object.keys(res))
+            .then(csvData => {
+                let newDB = {}
+                const arrayData = csvData.split('\r\n')
+                const labels = arrayData[0].split(",")
+                arrayData.slice(1).forEach(row => {
+                    let movie
+                    let rowData
+                    if (RegExp('\"').test(row)) {
+                        const splitData = RegExp('\\"(.*)\\"').exec(row)
+                        movie = splitData[1]
+                        rowData = row.replace(splitData[0], "").split(",")
+                    } else {
+                        rowData = row.split(",")
+                        movie = rowData[0]
+                    }
+                    newDB[movie] = {}
+
+                    rowData.slice(1).forEach((value, index) => {
+                        newDB[movie][labels[index+1]] = value
+                    })
+                })
+                setDb(newDB)
             })
     }, [])
 
     useEffect(() => {
-        setPostersVisible(Array(titlesList.length).fill(true))
+        setTitlesList(Object.keys(db))
+    }, [db])
 
+    useEffect(() => {
+        setPostersVisible(Array(titlesList.length).fill(true))
         setTimesList(titlesList.map(item => {
             return Number(db[item].time)
         }))
@@ -73,10 +95,7 @@ function MovieApp() {
     }
 
     const searchByTime = function (maxTime) {
-        // return timesList.map(time => {return time < searchTime})
-        return timesList.map(time => {
-            return time < maxTime
-        })
+        return timesList.map(time => {return time <= maxTime})
     }
 
     const clickRandom = function (event) {
@@ -87,7 +106,8 @@ function MovieApp() {
         <div className="app">
             <div className="controls-bar">
                 <h2>Hales Movie Database</h2>
-                <TitleSearch list={titlesList} value={searchTitle} set={setSearchTitle} count={postersVisible.filter(Boolean).length}/>
+                <TitleSearch list={titlesList} value={searchTitle} set={setSearchTitle}
+                             count={postersVisible.filter(Boolean).length}/>
                 <TimeSearch list={timesList} value={searchTime} set={setSearchTime}/>
                 <div className={"buttons-container"}>
                     <SearchButtons clickRandom={clickRandom} setSearchTitle={setSearchTitle}/>

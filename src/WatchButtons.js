@@ -13,6 +13,7 @@ const WatchButton = function (props) {
 
 const WatchButtons = function (props) {
     if (props.movie === "") return <div className={"watch-buttons"}/>
+    if (props.db[props.movie] === undefined) return <div className={"watch-buttons"}/>
     const options = props.db[props.movie]
 
     const buttons = [    ]
