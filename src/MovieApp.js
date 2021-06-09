@@ -22,7 +22,9 @@ function MovieApp() {
     const [searchTime, setSearchTime] = useState(0)
     const [searchTitle, setSearchTitle] = useState("")
 
-    useEffect(() => {
+    const localStorageItem = "halesMovieDB"
+
+    const fetchDataBase = function () {
         fetch(URL_dbJSON)
             .then(res => {
                 return res.text()
@@ -43,17 +45,33 @@ function MovieApp() {
                         movie = rowData[0]
                     }
                     newDB[movie] = {}
-
                     rowData.slice(1).forEach((value, index) => {
-                        newDB[movie][labels[index+1]] = value
+                        newDB[movie][labels[index + 1]] = value
                     })
                 })
                 setDb(newDB)
             })
+    }
+
+    useEffect(() => {
+        const cachedDB = JSON.parse(localStorage.getItem(localStorageItem))
+        if (cachedDB !== null) {
+            // if ((Date.now() - cachedDB._UPDATED) < 86400000) {
+            if ((Date.now() - cachedDB._UPDATED) < 15) {
+                console.log("using cached db")
+                delete cachedDB._UPDATED
+                setDb(cachedDB)
+                return
+            }
+        }
+        fetchDataBase()
     }, [])
 
     useEffect(() => {
         setTitlesList(Object.keys(db))
+        const dbToCache = JSON.parse(JSON.stringify(db))
+        dbToCache["_UPDATED"] = Date.now()
+        localStorage.setItem(localStorageItem, JSON.stringify(dbToCache))
     }, [db])
 
     useEffect(() => {
@@ -110,7 +128,8 @@ function MovieApp() {
                              count={postersVisible.filter(Boolean).length}/>
                 <TimeSearch list={timesList} value={searchTime} set={setSearchTime}/>
                 <div className={"buttons-container"}>
-                    <SearchButtons clickRandom={clickRandom} setSearchTitle={setSearchTitle}/>
+                    <SearchButtons clickRandom={clickRandom} setSearchTitle={setSearchTitle}
+                                   localItem={localStorageItem} fetchDB={fetchDataBase}/>
                     <WatchButtons movie={searchTitle} db={db}/>
                 </div>
             </div>
