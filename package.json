@@ -1,6 +1,6 @@
 {
   "name": "movies",
-  "version": "0.10.0",
+  "version": "0.11.0",
   "homepage": "/movies",
   "private": true,
   "dependencies": {
