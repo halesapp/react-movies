@@ -5,7 +5,7 @@ import "./WatchButtons.css"
 
 const WatchButton = function (props) {
     return (
-        <a href={props.href}>
+        <a href={props.href} target={"_blank"} rel={"noopener noreferrer"}>
             <button>{props.name}</button>
         </a>
     )
@@ -16,7 +16,7 @@ const WatchButtons = function (props) {
     if (props.db[props.movie] === undefined) return <div className={"watch-buttons"}/>
     const options = props.db[props.movie]
 
-    const buttons = [    ]
+    const buttons = []
 
     if (options.onGoogle) {
         buttons.push(

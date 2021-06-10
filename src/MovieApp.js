@@ -4,7 +4,7 @@ import OptionsModal from "./OptionsModal"
 import TitleSearch from "./TitleSearch";
 import TimeSearch from "./TimeSearch";
 import SearchButtons from "./SearchButtons";
-import MoviePoster from "./MoviePoster";
+import Gallery from "./Gallery"
 
 import {URL_dbJSON} from "./urls";
 
@@ -17,9 +17,7 @@ function MovieApp() {
     const [titlesList, setTitlesList] = useState([])
     const [timesList, setTimesList] = useState([])
 
-    const [posters, setPosters] = useState([])
     const [postersVisible, setPostersVisible] = useState([])
-
     const [searchTime, setSearchTime] = useState(0)
     const [searchTitle, setSearchTitle] = useState("")
 
@@ -39,7 +37,8 @@ function MovieApp() {
                 arrayData.slice(1).forEach(row => {
                     let movie
                     let rowData
-                    if (RegExp('\"').test(row)) {
+                    // csv values which contain commas are wrapped in quotes
+                    if (RegExp('"').test(row)) {
                         const splitData = RegExp('\\"(.*)\\"').exec(row)
                         movie = splitData[1]
                         rowData = row.replace(splitData[0], "").split(",")
@@ -61,7 +60,6 @@ function MovieApp() {
         if (cachedDB !== null) {
             // if ((Date.now() - cachedDB._UPDATED) < 86400000) {
             if ((Date.now() - cachedDB._UPDATED) < 15) {
-                console.log("using cached db")
                 delete cachedDB._UPDATED
                 setDb(cachedDB)
                 return
@@ -83,13 +81,6 @@ function MovieApp() {
             return Number(db[item].time)
         }))
     }, [titlesList])
-    useEffect(() => {
-        setPosters(titlesList.map(
-            (movie, index) => {
-                return <MoviePoster key={index} src={db[movie].poster} visible={postersVisible[index]} title={movie}
-                                    click={setSearchTitle}/>
-            }))
-    }, [postersVisible])
 
     useEffect(() => {
         let titleMatches
@@ -129,9 +120,22 @@ function MovieApp() {
         })
     }
 
+    const downloadDB = function () {
+        let link = document.createElement('a');
+        link.setAttribute('href', encodeURI(`data:application/json;charset=utf-8,${JSON.stringify(db)}`));
+        link.setAttribute('target', '_blank');
+        link.setAttribute('download', 'hales-movie-database.json');
+        link.click();
+        link.remove()
+    }
+
     return (
         <div className="app">
-            <OptionsModal visible={modalVisible} toggleModal={toggleModal} localItem={localStorageItem} fetchDB={fetchDataBase}/>
+            <OptionsModal visible={modalVisible}
+                          toggleModal={toggleModal}
+                          localItem={localStorageItem}
+                          fetchDB={fetchDataBase}
+                          downloadDB={downloadDB}/>
 
             <div className="controls-bar">
                 <h2>Hales Movie Database</h2>
@@ -143,12 +147,7 @@ function MovieApp() {
                     <WatchButtons movie={searchTitle} db={db}/>
                 </div>
             </div>
-
-            <div className="gallery">
-                <div className="posters-container">
-                    {posters}
-                </div>
-            </div>
+            <Gallery titlesList={titlesList} db={db} postersVisible={postersVisible} setSearchTitle={setSearchTitle} />
         </div>
     );
 }
