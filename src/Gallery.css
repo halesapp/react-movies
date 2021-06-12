@@ -1,4 +1,3 @@
-
 .gallery {
     display: flex;
     flex: 1 1 auto;
@@ -16,6 +15,16 @@
     padding: 0 5%;
     width: 85%;
     max-width: 1440px;
+}
+
+.gsheet-embed {
+    display: flex;
+    flex: 1 1 auto;
+    flex-wrap: wrap;
+    width: 80%;
+    margin: auto;
+    justify-content: center;
+    overflow: auto;
 }
 
 @media (orientation: portrait) {

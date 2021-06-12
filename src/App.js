@@ -8,11 +8,11 @@ import Gallery from "./Gallery"
 
 import {URL_dbJSON} from "./urls";
 
-import './MovieApp.css';
+import './App.css';
 import WatchButtons from "./WatchButtons";
 
 
-function MovieApp() {
+const App = function () {
     const [db, setDb] = useState({})
     const [titlesList, setTitlesList] = useState([])
     const [timesList, setTimesList] = useState([])
@@ -22,6 +22,7 @@ function MovieApp() {
     const [searchTitle, setSearchTitle] = useState("")
 
     const [modalVisible, setModalVisible] = useState(false)
+    const [viewMode, setViewMode] = useState("gallery")
 
     const localStorageItem = "halesMovieDB"
 
@@ -95,10 +96,6 @@ function MovieApp() {
         }))
     }, [searchTitle, searchTime])
 
-    useEffect(() => {
-
-    }, [timesList])
-
     const searchByTitle = function (searchStr) {
         // `.replace` on searchStr encodes regex special characters with backslashes
         // https://stackoverflow.com/questions/874709/converting-user-input-string-to-regular-expression
@@ -107,7 +104,9 @@ function MovieApp() {
     }
 
     const searchByTime = function (maxTime) {
-        return timesList.map(time => {return time <= maxTime})
+        return timesList.map(time => {
+            return time <= maxTime
+        })
     }
 
     const clickRandom = function (event) {
@@ -131,25 +130,29 @@ function MovieApp() {
 
     return (
         <div className="app">
-            <OptionsModal visible={modalVisible}
-                          toggleModal={toggleModal}
-                          localItem={localStorageItem}
-                          fetchDB={fetchDataBase}
-                          downloadDB={downloadDB}/>
-
             <div className="controls-bar">
                 <h2>Hales Movie Database</h2>
-                <TitleSearch list={titlesList} value={searchTitle} set={setSearchTitle}
-                             count={postersVisible.filter(Boolean).length}/>
+                <TitleSearch list={titlesList} value={searchTitle} set={setSearchTitle} count={postersVisible.filter(Boolean).length}/>
                 <TimeSearch list={timesList} value={searchTime} set={setSearchTime}/>
                 <div className={"buttons-container"}>
                     <SearchButtons clickRandom={clickRandom} setSearchTitle={setSearchTitle} toggleModal={toggleModal}/>
                     <WatchButtons movie={searchTitle} db={db}/>
                 </div>
             </div>
-            <Gallery titlesList={titlesList} db={db} postersVisible={postersVisible} setSearchTitle={setSearchTitle} />
+            {viewMode === "gallery" ? <Gallery titlesList={titlesList} db={db} postersVisible={postersVisible} setSearchTitle={setSearchTitle}/> : null}
+            {viewMode === "table" ? null : null}
+            {viewMode === "gsheet" ? <iframe className={"gsheet-embed"}
+                                             src="https://docs.google.com/spreadsheets/d/e/2PACX-1vSWb4mFDqo7FZkh5ov5juVw8i06_BRmJ9RdSBn5NFSlAzj_QoMW9f_W-NBvOmOTSk2SMxKLugIvuk44/pubhtml?gid=0&amp;single=true&amp;widget=true&amp;headers=false"></iframe> : null}
+            <OptionsModal visible={modalVisible}
+                          toggleModal={toggleModal}
+                          localItem={localStorageItem}
+                          fetchDB={fetchDataBase}
+                          downloadDB={downloadDB}
+                          viewMode={viewMode}
+                          setViewMode={setViewMode}/>
         </div>
+
     );
 }
 
-export default MovieApp;
+export default App;

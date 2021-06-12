@@ -16,4 +16,8 @@
     .time-search-box {
         width: 90%;
     }
+    .time-search-input {
+        width: 70%;
+        padding: 0;
+    }
 }
