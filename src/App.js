@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from "react";
 
+import LoadingScreen from "./LoadingScreen"
 import OptionsModal from "./OptionsModal"
 import TitleSearch from "./TitleSearch";
 import TimeSearch from "./TimeSearch";
@@ -13,7 +14,7 @@ import WatchButtons from "./WatchButtons";
 
 
 const App = function () {
-    const [db, setDb] = useState({})
+    const [db, setDb] = useState(null)
     const [titlesList, setTitlesList] = useState([])
     const [timesList, setTimesList] = useState([])
 
@@ -70,6 +71,7 @@ const App = function () {
     }, [])
 
     useEffect(() => {
+        if (db === null) return
         setTitlesList(Object.keys(db))
         const dbToCache = JSON.parse(JSON.stringify(db))
         dbToCache["_UPDATED"] = Date.now()
@@ -77,6 +79,7 @@ const App = function () {
     }, [db])
 
     useEffect(() => {
+        if (titlesList.length === 0) return
         setPostersVisible(Array(titlesList.length).fill(true))
         setTimesList(titlesList.map(item => {
             return Number(db[item].time)
@@ -128,7 +131,7 @@ const App = function () {
         link.remove()
     }
 
-    return (
+    return db === null ? <LoadingScreen /> : (
         <div className="app">
             <div className="controls-bar">
                 <h2>Hales Movie Database</h2>
@@ -142,7 +145,7 @@ const App = function () {
             {viewMode === "gallery" ? <Gallery titlesList={titlesList} db={db} postersVisible={postersVisible} setSearchTitle={setSearchTitle}/> : null}
             {viewMode === "table" ? null : null}
             {viewMode === "gsheet" ? <iframe className={"gsheet-embed"}
-                                             src="https://docs.google.com/spreadsheets/d/e/2PACX-1vSWb4mFDqo7FZkh5ov5juVw8i06_BRmJ9RdSBn5NFSlAzj_QoMW9f_W-NBvOmOTSk2SMxKLugIvuk44/pubhtml?gid=0&amp;single=true&amp;widget=true&amp;headers=false"></iframe> : null}
+                                             src="https://docs.google.com/spreadsheets/d/e/2PACX-1vSWb4mFDqo7FZkh5ov5juVw8i06_BRmJ9RdSBn5NFSlAzj_QoMW9f_W-NBvOmOTSk2SMxKLugIvuk44/pubhtml?gid=0&amp;single=true&amp;widget=true&amp;headers=false" /> : null}
             <OptionsModal visible={modalVisible}
                           toggleModal={toggleModal}
                           localItem={localStorageItem}
