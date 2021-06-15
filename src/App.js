@@ -7,11 +7,10 @@ import TimeSearch from "./TimeSearch";
 import SearchButtons from "./SearchButtons";
 import Gallery from "./Gallery"
 
-import {URL_dbJSON} from "./urls";
-
 import './App.css';
 import WatchButtons from "./WatchButtons";
 
+const URL_dbJSON = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSWb4mFDqo7FZkh5ov5juVw8i06_BRmJ9RdSBn5NFSlAzj_QoMW9f_W-NBvOmOTSk2SMxKLugIvuk44/pub?gid=0&single=true&output=csv"
 
 const App = function () {
     const [db, setDb] = useState(null)
@@ -28,6 +27,7 @@ const App = function () {
     const localStorageItem = "halesMovieDB"
 
     const fetchDataBase = function () {
+        setDb(null)
         fetch(URL_dbJSON)
             .then(res => {
                 return res.text()

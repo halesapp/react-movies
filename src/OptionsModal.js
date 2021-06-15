@@ -3,9 +3,6 @@ import React from "react"
 import "./OptionsModal.css"
 
 const OptionsModal = function (props) {
-    // if (!props.visible) {
-    //     return null
-    // }
     return (
         <div className={`modal-wrapper ${props.visible ? "show" : "hide"}`}>
             <div className={"modal-content"}>
@@ -14,6 +11,7 @@ const OptionsModal = function (props) {
                     <h2 className={"modal-title"}>Advanced Options</h2>
                     <button className={"modal-button"} onClick={() => {
                         localStorage.setItem(props.localItem, null);
+                        props.toggleModal()
                         props.fetchDB()
                     }}>Refresh List
                     </button>
@@ -42,7 +40,6 @@ const OptionsModal = function (props) {
                             <input type={"radio"} value={"gsheet"} checked={props.viewMode === "gsheet" ? true : false} onChange={() => props.setViewMode("gsheet")}/>
                         </div>
                     </div>
-
 
                 </div>
                 <div className={"modal-footer"}>
