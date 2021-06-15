@@ -4,16 +4,16 @@ import "./TableView.css"
 
 const TableView = function (props) {
     const columnNames = Object.keys(props.db[props.titlesList[0]])
-    const labelRow = ['Movie'].concat(columnNames).map(item => {
-        return <th>{item}</th>
+    const labelRow = ['Movie'].concat(columnNames).map((item, index) => {
+        return <th key={index}>{item}</th>
     })
     const rows = props.titlesList.map(
         (movie, index) => {
-            const entries = [<td>{movie}</td>,].concat(columnNames.map(property => {
-                return <td>{props.db[movie][property]}</td>
+            const entries = [<td key={0}>{movie}</td>,].concat(columnNames.map((property, index) => {
+                return <td key={index + 1}>{props.db[movie][property]}</td>
             }))
             return (
-                <tr className="table-row" style={{"display": props.postersVisible[index] ? "" : "none"}}>{entries}</tr>
+                <tr key={index} className="table-row" style={{"display": props.postersVisible[index] ? "" : "none"}}>{entries}</tr>
             )
         }
     )

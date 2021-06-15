@@ -1,0 +1,11 @@
+.options-button {
+    display: flex;
+    padding: 2px;
+    margin: 0;
+    position: absolute;
+    top: .85em;
+    right: .83em;
+    float: right;
+    background-color: rgba(0,0,0,0);
+    border: none;
+}

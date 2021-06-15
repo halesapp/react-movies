@@ -12,7 +12,7 @@ const TimeSearch = function (props) {
 
     return (
         <div className={"time-search-box"}>
-            <p>Runtime:</p>
+            <p>Time:</p>
             <input className={"time-search-input"} type={"range"} min={interval} max={maxTime} step={interval}
                   onChange={event => {props.set(event.target.value)}} value={props.value}/>
             <p>{props.value === Infinity ? "" : props.value} min</p>

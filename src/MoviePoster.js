@@ -1,4 +1,4 @@
-import {URL_tmdbPosterBase} from "./urls";
+import React from "react"
 
 import "./MoviePoster.css"
 

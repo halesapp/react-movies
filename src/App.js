@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from "react";
 
 import LoadingScreen from "./LoadingScreen"
+import OptionsButton from "./OptionsButton"
 import OptionsModal from "./OptionsModal"
 import TitleSearch from "./TitleSearch";
 import TimeSearch from "./TimeSearch";
@@ -135,11 +136,13 @@ const App = function () {
     return db === null ? <LoadingScreen /> : (
         <div className="app">
             <div className="controls-bar">
+
                 <h2>Hales Movie Database</h2>
+                <OptionsButton toggleModal={toggleModal}/>
                 <TitleSearch list={titlesList} value={searchTitle} set={setSearchTitle} count={postersVisible.filter(Boolean).length}/>
                 <TimeSearch list={timesList} value={searchTime} set={setSearchTime}/>
                 <div className={"buttons-container"}>
-                    <SearchButtons clickRandom={clickRandom} setSearchTitle={setSearchTitle} toggleModal={toggleModal} viewMode={viewMode} setViewMode={setViewMode}/>
+                    <SearchButtons clickRandom={clickRandom} setSearchTitle={setSearchTitle} viewMode={viewMode} setViewMode={setViewMode}/>
                     <WatchButtons movie={searchTitle} db={db}/>
                 </div>
             </div>
