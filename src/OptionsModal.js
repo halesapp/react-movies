@@ -25,22 +25,6 @@ const OptionsModal = function (props) {
 
                     <button className={"modal-button"} onClick={props.downloadDB}>Download Database JSON</button>
 
-                    <div>
-                        View Modes:&nbsp;&nbsp;&nbsp;&nbsp;
-                        <div className={"view-inputs"}>
-                            <label for={"viewmode-gallery"}>Poster Gallery</label>
-                            <input type={"radio"} value={"gallery"} checked={props.viewMode === "gallery" ? true : false} onChange={() => props.setViewMode("gallery")}/>
-                        </div>
-                        <div className={"view-inputs"}>
-                            <label for={"viewmode-gallery"}>Table</label>
-                            <input type={"radio"} value={"table"} checked={props.viewMode === "table" ? true : false} onChange={() => props.setViewMode("table")}/>
-                        </div>
-                        <div className={"view-inputs"}>
-                            <label for={"viewmode-gallery"}>Google Sheet iframe</label>
-                            <input type={"radio"} value={"gsheet"} checked={props.viewMode === "gsheet" ? true : false} onChange={() => props.setViewMode("gsheet")}/>
-                        </div>
-                    </div>
-
                 </div>
                 <div className={"modal-footer"}>
                     <button className={"modal-button"} onClick={() => {

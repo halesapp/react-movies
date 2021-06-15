@@ -6,6 +6,7 @@ import TitleSearch from "./TitleSearch";
 import TimeSearch from "./TimeSearch";
 import SearchButtons from "./SearchButtons";
 import Gallery from "./Gallery"
+import TableView from "./TableView"
 
 import './App.css';
 import WatchButtons from "./WatchButtons";
@@ -138,21 +139,19 @@ const App = function () {
                 <TitleSearch list={titlesList} value={searchTitle} set={setSearchTitle} count={postersVisible.filter(Boolean).length}/>
                 <TimeSearch list={timesList} value={searchTime} set={setSearchTime}/>
                 <div className={"buttons-container"}>
-                    <SearchButtons clickRandom={clickRandom} setSearchTitle={setSearchTitle} toggleModal={toggleModal}/>
+                    <SearchButtons clickRandom={clickRandom} setSearchTitle={setSearchTitle} toggleModal={toggleModal} viewMode={viewMode} setViewMode={setViewMode}/>
                     <WatchButtons movie={searchTitle} db={db}/>
                 </div>
             </div>
             {viewMode === "gallery" ? <Gallery titlesList={titlesList} db={db} postersVisible={postersVisible} setSearchTitle={setSearchTitle}/> : null}
-            {viewMode === "table" ? null : null}
+            {viewMode === "table" ? <TableView titlesList={titlesList} db={db} postersVisible={postersVisible} setSearchTitle={setSearchTitle}/> : null}
             {viewMode === "gsheet" ? <iframe className={"gsheet-embed"}
                                              src="https://docs.google.com/spreadsheets/d/e/2PACX-1vSWb4mFDqo7FZkh5ov5juVw8i06_BRmJ9RdSBn5NFSlAzj_QoMW9f_W-NBvOmOTSk2SMxKLugIvuk44/pubhtml?gid=0&amp;single=true&amp;widget=true&amp;headers=false" /> : null}
             <OptionsModal visible={modalVisible}
                           toggleModal={toggleModal}
                           localItem={localStorageItem}
                           fetchDB={fetchDataBase}
-                          downloadDB={downloadDB}
-                          viewMode={viewMode}
-                          setViewMode={setViewMode}/>
+                          downloadDB={downloadDB} />
         </div>
 
     );
