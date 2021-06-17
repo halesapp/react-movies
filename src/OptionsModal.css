@@ -116,8 +116,4 @@ input:checked + .slider:before {
         margin-left: 3%;
         margin-right: 3%;
     }
-
-    .modal-div {
-        width: 100%;
-    }
 }
