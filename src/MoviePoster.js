@@ -2,8 +2,6 @@ import React from "react"
 
 import "./MoviePoster.css"
 
-const posterBaseUrl = "https://image.tmdb.org/t/p/w300/"
-
 const MoviePoster = function (props) {
     return (
         <div className="poster-wrapper"
@@ -13,9 +11,9 @@ const MoviePoster = function (props) {
             <img loading="lazy"
                  alt="movie-poster"
                  className={"poster-img"}
-                 src={`${posterBaseUrl}${props.src}.jpg`}/>
+                 src={props.src}/>
         </div>
     )
-};
+}
 
 export default MoviePoster

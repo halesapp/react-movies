@@ -1,20 +1,21 @@
-import React, {useState, useEffect} from "react";
-
-import LoadingScreen from "./LoadingScreen"
-import OptionsButton from "./OptionsButton"
-import OptionsModal from "./OptionsModal"
-import TitleSearch from "./TitleSearch";
-import TimeSearch from "./TimeSearch";
-import SearchButtons from "./SearchButtons";
-import Gallery from "./Gallery"
-import TableView from "./TableView"
+import React, {useState, useEffect, lazy, Suspense} from "react";
 
 import './App.css';
-import WatchButtons from "./WatchButtons";
+
+import LoadingScreen from "./LoadingScreen"
+
+const OptionsButton = lazy(() => import('./OptionsButton'))
+const OptionsModal = lazy(() => import('./OptionsModal'))
+const TitleSearch = lazy(() => import('./TitleSearch'))
+const TimeSearch = lazy(() => import('./TimeSearch'))
+const SearchButtons = lazy(() => import('./SearchButtons'))
+const Gallery = lazy(() => import('./Gallery'))
+const TableView = lazy(() => import('./TableView'))
+const WatchButtons = lazy(() => import('./WatchButtons'))
 
 const URL_dbJSON = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSWb4mFDqo7FZkh5ov5juVw8i06_BRmJ9RdSBn5NFSlAzj_QoMW9f_W-NBvOmOTSk2SMxKLugIvuk44/pub?gid=0&single=true&output=csv"
 const localStorageItem = "halesMovieDB"
-const _12hours = 43200000
+const _24hours = 86400000
 
 const App = function () {
     const [db, setDb] = useState(null)
@@ -23,9 +24,10 @@ const App = function () {
     const [discOnlyList, setDiscOnlyList] = useState(null)
 
     const [movieMatches, setMovieMatches] = useState([])
-    const [searchTime, setSearchTime] = useState(0)
     const [searchTitle, setSearchTitle] = useState("")
+    const [searchTime, setSearchTime] = useState(0)
     const [excludeDisc, setExcludeDisc] = useState(false)
+    const [imgHighRes, setImgHighRes] = useState(false)
 
     const [modalVisible, setModalVisible] = useState(false)
     const [viewMode, setViewMode] = useState("gallery")
@@ -64,7 +66,7 @@ const App = function () {
     useEffect(() => {
         const cachedDB = JSON.parse(localStorage.getItem(localStorageItem))
         if (cachedDB !== null) {
-            if ((Date.now() - cachedDB._UPDATED) < _12hours) {
+            if ((Date.now() - cachedDB._UPDATED) < _24hours) {
                 delete cachedDB._UPDATED
                 setDb(cachedDB)
                 return
@@ -75,10 +77,10 @@ const App = function () {
 
     useEffect(() => {
         if (db === null) return
-        setTitlesList(Object.keys(db))
         const dbToCache = JSON.parse(JSON.stringify(db))
         dbToCache["_UPDATED"] = Date.now()
         localStorage.setItem(localStorageItem, JSON.stringify(dbToCache))
+        setTitlesList(Object.keys(db))
     }, [db])
 
     useEffect(() => {
@@ -135,6 +137,10 @@ const App = function () {
         setExcludeDisc(prevState => {return !prevState})
     }
 
+    const toggleImgRes = function () {
+        setImgHighRes(prevState => {return!prevState})
+    }
+
     const downloadDB = function () {
         let link = document.createElement('a');
         link.setAttribute('href', encodeURI(`data:application/json;charset=utf-8,${JSON.stringify(db)}`));
@@ -144,32 +150,36 @@ const App = function () {
         link.remove()
     }
 
-    return db === null ? <LoadingScreen /> : (
-        <div className="app">
-            <div className="controls-bar">
-                <h2>Hales Movie Database</h2>
-                <OptionsButton toggleModal={toggleModal}/>
-                <TitleSearch list={titlesList} value={searchTitle} set={setSearchTitle} count={movieMatches.filter(Boolean).length}/>
-                <TimeSearch list={timesList} value={searchTime} set={setSearchTime}/>
-                <div className={"buttons-container"}>
-                    <SearchButtons clickRandom={clickRandom} setSearchTitle={setSearchTitle} viewMode={viewMode} setViewMode={setViewMode}/>
-                    <WatchButtons movie={searchTitle} db={db}/>
+    if (db === null) return <LoadingScreen message={"Loading database..."}/>
+    return (
+        <Suspense fallback={<LoadingScreen message={"Loading display..."}/>}>
+            <div className="app">
+                <div className="controls-bar">
+                    <h2>Hales Movie Database</h2>
+                    <OptionsButton toggleModal={toggleModal}/>
+                    <TitleSearch list={titlesList} value={searchTitle} set={setSearchTitle} count={movieMatches.filter(Boolean).length}/>
+                    <TimeSearch list={timesList} value={searchTime} set={setSearchTime}/>
+                    <div className={"buttons-container"}>
+                        <SearchButtons clickRandom={clickRandom} setSearchTitle={setSearchTitle} viewMode={viewMode} setViewMode={setViewMode}/>
+                        <WatchButtons movie={searchTitle} db={db}/>
+                    </div>
                 </div>
+                {viewMode === "gallery" ? <Gallery imgHighRes={imgHighRes} titlesList={titlesList} db={db} postersVisible={movieMatches} setSearchTitle={setSearchTitle}/> : null}
+                {viewMode === "table" ? <TableView titlesList={titlesList} db={db} postersVisible={movieMatches} setSearchTitle={setSearchTitle}/> : null}
+                {viewMode === "gsheet" ? <iframe className={"gsheet-embed"}
+                                                 src="https://docs.google.com/spreadsheets/d/e/2PACX-1vSWb4mFDqo7FZkh5ov5juVw8i06_BRmJ9RdSBn5NFSlAzj_QoMW9f_W-NBvOmOTSk2SMxKLugIvuk44/pubhtml?gid=0&amp;single=true&amp;widget=true&amp;headers=false" /> : null}
+                <OptionsModal visible={modalVisible}
+                              toggleModal={toggleModal}
+                              toggleDisc={toggleExcludeDisc}
+                              filterDisc={excludeDisc}
+                              toggleImgRes={toggleImgRes}
+                              imgHighRes={imgHighRes}
+                              localItem={localStorageItem}
+                              fetchDB={fetchDataBase}
+                              downloadDB={downloadDB} />
             </div>
-            {viewMode === "gallery" ? <Gallery titlesList={titlesList} db={db} postersVisible={movieMatches} setSearchTitle={setSearchTitle}/> : null}
-            {viewMode === "table" ? <TableView titlesList={titlesList} db={db} postersVisible={movieMatches} setSearchTitle={setSearchTitle}/> : null}
-            {viewMode === "gsheet" ? <iframe className={"gsheet-embed"}
-                                             src="https://docs.google.com/spreadsheets/d/e/2PACX-1vSWb4mFDqo7FZkh5ov5juVw8i06_BRmJ9RdSBn5NFSlAzj_QoMW9f_W-NBvOmOTSk2SMxKLugIvuk44/pubhtml?gid=0&amp;single=true&amp;widget=true&amp;headers=false" /> : null}
-            <OptionsModal visible={modalVisible}
-                          toggleModal={toggleModal}
-                          toggleDisc={toggleExcludeDisc}
-                          filterDisc={excludeDisc}
-                          localItem={localStorageItem}
-                          fetchDB={fetchDataBase}
-                          downloadDB={downloadDB} />
-        </div>
-
-    );
+        </Suspense>
+    )
 }
 
 export default App;

@@ -6,9 +6,11 @@ const OptionsModal = function (props) {
     return (
         <div className={`modal-wrapper ${props.visible ? "show" : "hide"}`}>
             <div className={"modal-content"}>
-                <div className={"modal-body"}>
-
+                <div className={"modal-head"}>
                     <h2 className={"modal-title"}>Advanced Options</h2>
+                    <div>&copy; Riley Hales, 2021, {process.env.REACT_APP_VERSION}</div>
+                </div>
+                <div className={"modal-body"}>
                     <button className={"modal-button"} onClick={() => {
                         localStorage.setItem(props.localItem, null);
                         props.toggleModal()
@@ -27,12 +29,19 @@ const OptionsModal = function (props) {
                     <div className={"modal-div"}>
                         <div className={"modal-opt-label"}>Exclude movies on Disc:</div>
                         <label className="switch">
-                            <input type="checkbox" onChange={() => props.toggleDisc()} value={props.filterDisc}/>
+                            <input type="checkbox" onChange={() => props.toggleDisc()} value={props.filterDisc} aria-label={"toggle disc only movies in results"}/>
                             <span className="slider"/>
                         </label>
                     </div>
-
+                    <div className={"modal-div"}>
+                        <div className={"modal-opt-label"}>Show higher res images:</div>
+                        <label className="switch">
+                            <input type="checkbox" onChange={() => props.toggleImgRes()} value={props.imgHighRes} aria-label={"toggle high res image posters"}/>
+                            <span className="slider"/>
+                        </label>
+                    </div>
                 </div>
+
                 <div className={"modal-footer"}>
                     <button className={"modal-button"} onClick={() => {
                         props.toggleModal()

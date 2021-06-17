@@ -7,8 +7,7 @@
     background: rgba(0,0,0,.7);
 }
 .modal-content {
-    height: 50%;
-    width: 65%;
+    width: 50%;
     text-align: center;
     margin-top: 10%;
     margin-left: auto;
@@ -18,13 +17,16 @@
     display: flex;
     flex-direction: column;
 }
+.modal-head {
+    padding-bottom: 1%;
+}
 .modal-body {
     flex: 1 1 auto;
     border: 1px solid;
-    padding: 1em;
+    padding: .5em;
 }
 .modal-button {
-    width: 100%;
+    width: 90%;
     padding: .5em 0;
     margin: .5em 0;
 }
@@ -48,12 +50,15 @@
 }
 .modal-div {
     display: inline-block;
-    width: 80%;
-    padding: .5em 0;
-    margin: .5em 0;
+    width: 85%;
+    padding: .25em 0;
+    margin: .25em 0;
 }
-.modal-div > div {
+.modal-opt-label {
     float: left;
+    display: flex;
+    height: 34px;
+    align-items: center;
 }
 
 /* The switch - the box around the slider */
