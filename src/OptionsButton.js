@@ -4,7 +4,7 @@ import "./OptionsButton.css"
 
 const OptionsButton = function (props) {
     return (
-        <button className={"options-button"} onClick={() => {props.toggleModal()}}>
+        <button className={"options-button"} aria-label={"open options menu"} onClick={() => {props.toggleModal()}}>
             <svg
                 viewBox="0 0 16 16"
                 fill="currentColor"

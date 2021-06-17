@@ -23,7 +23,6 @@ const WatchButtons = function (props) {
         buttons.push(
             <WatchButton
                 key={"google"}
-                key={"google"}
                 href={options.gid ? `${URL_pageGoogle}${options.gid}` : `${URL_searchGoogle}${props.movie}`}
             >
                 <GooglePlayLogo/>

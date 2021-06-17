@@ -2,7 +2,7 @@ import React from "react"
 
 const GooglePlayLogo = function (props) {
     return (
-        <svg viewBox="0 0 512 512" style={{"enable-background": "new 0 0 512 512;"}} xmlSpace="preserve" className={"watch-icon"}>
+        <svg viewBox="0 0 512 512" style={{"enableBackground": "new 0 0 512 512"}} xmlSpace="preserve" className={"watch-icon"}>
             <path style={{"fill": "#FBBB00"}}
                   d="M113.47,309.408L95.648,375.94l-65.139,1.378C11.042,341.211,0,299.9,0,256 c0-42.451,10.324-82.483,28.624-117.732h0.014l57.992,10.632l25.404,57.644c-5.317,15.501-8.215,32.141-8.215,49.456 C103.821,274.792,107.225,292.797,113.47,309.408z"/>
             <path style={{"fill": "#518EF8"}}

@@ -13,20 +13,22 @@ import './App.css';
 import WatchButtons from "./WatchButtons";
 
 const URL_dbJSON = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSWb4mFDqo7FZkh5ov5juVw8i06_BRmJ9RdSBn5NFSlAzj_QoMW9f_W-NBvOmOTSk2SMxKLugIvuk44/pub?gid=0&single=true&output=csv"
+const localStorageItem = "halesMovieDB"
+const _12hours = 43200000
 
 const App = function () {
     const [db, setDb] = useState(null)
     const [titlesList, setTitlesList] = useState([])
     const [timesList, setTimesList] = useState([])
+    const [discOnlyList, setDiscOnlyList] = useState(null)
 
-    const [postersVisible, setPostersVisible] = useState([])
+    const [movieMatches, setMovieMatches] = useState([])
     const [searchTime, setSearchTime] = useState(0)
     const [searchTitle, setSearchTitle] = useState("")
+    const [excludeDisc, setExcludeDisc] = useState(false)
 
     const [modalVisible, setModalVisible] = useState(false)
     const [viewMode, setViewMode] = useState("gallery")
-
-    const localStorageItem = "halesMovieDB"
 
     const fetchDataBase = function () {
         setDb(null)
@@ -62,8 +64,7 @@ const App = function () {
     useEffect(() => {
         const cachedDB = JSON.parse(localStorage.getItem(localStorageItem))
         if (cachedDB !== null) {
-            // if ((Date.now() - cachedDB._UPDATED) < 86400000) {
-            if ((Date.now() - cachedDB._UPDATED) < 15) {
+            if ((Date.now() - cachedDB._UPDATED) < _12hours) {
                 delete cachedDB._UPDATED
                 setDb(cachedDB)
                 return
@@ -82,9 +83,12 @@ const App = function () {
 
     useEffect(() => {
         if (titlesList.length === 0) return
-        setPostersVisible(Array(titlesList.length).fill(true))
+        setMovieMatches(Array(titlesList.length).fill(true))
         setTimesList(titlesList.map(item => {
             return Number(db[item].time)
+        }))
+        setDiscOnlyList(titlesList.map(title => {
+            return Boolean(db[title].disc && !db[title].onGoogle && !db[title].onFandango)
         }))
     }, [titlesList])
 
@@ -96,10 +100,11 @@ const App = function () {
             titleMatches = searchByTitle(searchTitle)
         }
         const timeMatches = searchByTime(searchTime)
-        setPostersVisible(titleMatches.map((item, index) => {
-            return item && timeMatches[index]
+
+        setMovieMatches(titleMatches.map((item, index) => {
+            return item && timeMatches[index] && (excludeDisc ? !discOnlyList[index] : true)
         }))
-    }, [searchTitle, searchTime])
+    }, [searchTitle, searchTime, excludeDisc])
 
     const searchByTitle = function (searchStr) {
         // `.replace` on searchStr encodes regex special characters with backslashes
@@ -114,14 +119,20 @@ const App = function () {
         })
     }
 
-    const clickRandom = function (event) {
-        setSearchTitle(titlesList[Math.floor(Math.random() * titlesList.length)])
+    const clickRandom = function (event, count) {
+        if (count === undefined) count = 1
+        const randomChoice = titlesList[Math.floor(Math.random() * titlesList.length)]
+        if (count > 10) return
+        if (!movieMatches[titlesList.indexOf(randomChoice)]) return clickRandom(event,count + 1)
+        setSearchTitle(randomChoice)
     }
 
     const toggleModal = function () {
-        setModalVisible(prevState => {
-            return !prevState
-        })
+        setModalVisible(prevState => {return !prevState})
+    }
+
+    const toggleExcludeDisc = function () {
+        setExcludeDisc(prevState => {return !prevState})
     }
 
     const downloadDB = function () {
@@ -136,22 +147,23 @@ const App = function () {
     return db === null ? <LoadingScreen /> : (
         <div className="app">
             <div className="controls-bar">
-
                 <h2>Hales Movie Database</h2>
                 <OptionsButton toggleModal={toggleModal}/>
-                <TitleSearch list={titlesList} value={searchTitle} set={setSearchTitle} count={postersVisible.filter(Boolean).length}/>
+                <TitleSearch list={titlesList} value={searchTitle} set={setSearchTitle} count={movieMatches.filter(Boolean).length}/>
                 <TimeSearch list={timesList} value={searchTime} set={setSearchTime}/>
                 <div className={"buttons-container"}>
                     <SearchButtons clickRandom={clickRandom} setSearchTitle={setSearchTitle} viewMode={viewMode} setViewMode={setViewMode}/>
                     <WatchButtons movie={searchTitle} db={db}/>
                 </div>
             </div>
-            {viewMode === "gallery" ? <Gallery titlesList={titlesList} db={db} postersVisible={postersVisible} setSearchTitle={setSearchTitle}/> : null}
-            {viewMode === "table" ? <TableView titlesList={titlesList} db={db} postersVisible={postersVisible} setSearchTitle={setSearchTitle}/> : null}
+            {viewMode === "gallery" ? <Gallery titlesList={titlesList} db={db} postersVisible={movieMatches} setSearchTitle={setSearchTitle}/> : null}
+            {viewMode === "table" ? <TableView titlesList={titlesList} db={db} postersVisible={movieMatches} setSearchTitle={setSearchTitle}/> : null}
             {viewMode === "gsheet" ? <iframe className={"gsheet-embed"}
                                              src="https://docs.google.com/spreadsheets/d/e/2PACX-1vSWb4mFDqo7FZkh5ov5juVw8i06_BRmJ9RdSBn5NFSlAzj_QoMW9f_W-NBvOmOTSk2SMxKLugIvuk44/pubhtml?gid=0&amp;single=true&amp;widget=true&amp;headers=false" /> : null}
             <OptionsModal visible={modalVisible}
                           toggleModal={toggleModal}
+                          toggleDisc={toggleExcludeDisc}
+                          filterDisc={excludeDisc}
                           localItem={localStorageItem}
                           fetchDB={fetchDataBase}
                           downloadDB={downloadDB} />

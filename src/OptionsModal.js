@@ -18,12 +18,19 @@ const OptionsModal = function (props) {
                     <br/>
 
                     <a href={"https://docs.google.com/spreadsheets/d/1STMqN8zF0rUsskwK5FCGFrmLRy_rdLd900_blI-T49s/edit?usp=sharing"}
-                       target={"_blank"}
-                       rel={"noopener noreferrer"}>
+                       target={"_blank"} rel={"noopener noreferrer"}>
                         <button className={"modal-button"}>View Google Sheet</button>
                     </a>
 
                     <button className={"modal-button"} onClick={props.downloadDB}>Download Database JSON</button>
+
+                    <div className={"modal-div"}>
+                        <div className={"modal-opt-label"}>Exclude movies on Disc:</div>
+                        <label className="switch">
+                            <input type="checkbox" onChange={() => props.toggleDisc()} value={props.filterDisc}/>
+                            <span className="slider"/>
+                        </label>
+                    </div>
 
                 </div>
                 <div className={"modal-footer"}>
