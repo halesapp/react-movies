@@ -95,6 +95,7 @@ const App = function () {
     }, [titlesList])
 
     useEffect(() => {
+        if (movieMatches.length === 0) return
         let titleMatches
         if (searchTitle === "") {
             titleMatches = Array(titlesList.length).fill(true)
@@ -150,7 +151,7 @@ const App = function () {
         link.remove()
     }
 
-    if (db === null) return <LoadingScreen message={"Loading database..."}/>
+    if (db === null || titlesList.length === 0) return <LoadingScreen message={"Loading database..."}/>
     return (
         <Suspense fallback={<LoadingScreen message={"Loading display..."}/>}>
             <div className="app">

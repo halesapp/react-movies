@@ -2,10 +2,11 @@
     position: relative;
     display: inline-block;
     margin: 5px;
+    height: 300px;
+    width: 200px;
 }
 
 .poster-img {
-    max-height: 250px;
     margin: 0;
     flex-direction: column;
     padding: 0;
