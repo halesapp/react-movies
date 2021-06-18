@@ -5,13 +5,11 @@
     height: 300px;
     width: 200px;
 }
-
 .poster-img {
     margin: 0;
     flex-direction: column;
     padding: 0;
 }
-
 .poster-title {
     display: flex;
     text-align: center;
@@ -23,7 +21,6 @@
     align-items: center;
     display: block;
 }
-
 .poster-wrapper:after {
     content: attr(title);
     position: absolute;
@@ -42,6 +39,12 @@
     color: rgba(0,0,0,1);
 }
 
+@media (orientation: portrait) and (max-width: 750px) {
+    .poster-wrapper {
+        height: 150px;
+        width: 100px;
+    }
+}
 @media (orientation: portrait) {
     .poster {
         max-height: 175px;

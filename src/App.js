@@ -4,14 +4,13 @@ import './App.css';
 
 import LoadingScreen from "./LoadingScreen"
 
-const OptionsButton = lazy(() => import('./OptionsButton'))
-const OptionsModal = lazy(() => import('./OptionsModal'))
 const TitleSearch = lazy(() => import('./TitleSearch'))
 const TimeSearch = lazy(() => import('./TimeSearch'))
-const SearchButtons = lazy(() => import('./SearchButtons'))
+const ButtonControls = lazy(() => import('./ButtonControls'))
 const Gallery = lazy(() => import('./Gallery'))
 const TableView = lazy(() => import('./TableView'))
-const WatchButtons = lazy(() => import('./WatchButtons'))
+const OptionsButton = lazy(() => import('./OptionsButton'))
+const OptionsModal = lazy(() => import('./OptionsModal'))
 
 const URL_dbJSON = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSWb4mFDqo7FZkh5ov5juVw8i06_BRmJ9RdSBn5NFSlAzj_QoMW9f_W-NBvOmOTSk2SMxKLugIvuk44/pub?gid=0&single=true&output=csv"
 const localStorageItem = "halesMovieDB"
@@ -122,12 +121,8 @@ const App = function () {
         })
     }
 
-    const clickRandom = function (event, count) {
-        if (count === undefined) count = 1
-        const randomChoice = titlesList[Math.floor(Math.random() * titlesList.length)]
-        if (count > 10) return
-        if (!movieMatches[titlesList.indexOf(randomChoice)]) return clickRandom(event,count + 1)
-        setSearchTitle(randomChoice)
+    const chooseRandom = function () {
+        setSearchTitle(titlesList[Math.round(Math.random() * titlesList.length)])
     }
 
     const toggleModal = function () {
@@ -160,15 +155,11 @@ const App = function () {
                     <OptionsButton toggleModal={toggleModal}/>
                     <TitleSearch list={titlesList} value={searchTitle} set={setSearchTitle} count={movieMatches.filter(Boolean).length}/>
                     <TimeSearch list={timesList} value={searchTime} set={setSearchTime}/>
-                    <div className={"buttons-container"}>
-                        <SearchButtons clickRandom={clickRandom} setSearchTitle={setSearchTitle} viewMode={viewMode} setViewMode={setViewMode}/>
-                        <WatchButtons movie={searchTitle} db={db}/>
-                    </div>
+                    <ButtonControls movie={searchTitle} db={db} chooseRandom={chooseRandom} setSearchTitle={setSearchTitle} viewMode={viewMode} setViewMode={setViewMode}/>
                 </div>
-                {viewMode === "gallery" ? <Gallery imgHighRes={imgHighRes} titlesList={titlesList} db={db} postersVisible={movieMatches} setSearchTitle={setSearchTitle}/> : null}
-                {viewMode === "table" ? <TableView titlesList={titlesList} db={db} postersVisible={movieMatches} setSearchTitle={setSearchTitle}/> : null}
-                {viewMode === "gsheet" ? <iframe className={"gsheet-embed"}
-                                                 src="https://docs.google.com/spreadsheets/d/e/2PACX-1vSWb4mFDqo7FZkh5ov5juVw8i06_BRmJ9RdSBn5NFSlAzj_QoMW9f_W-NBvOmOTSk2SMxKLugIvuk44/pubhtml?gid=0&amp;single=true&amp;widget=true&amp;headers=false" /> : null}
+                {viewMode === "gallery" ?
+                    <Gallery imgHighRes={imgHighRes} titlesList={titlesList} db={db} postersVisible={movieMatches} setSearchTitle={setSearchTitle}/> :
+                    <TableView titlesList={titlesList} db={db} postersVisible={movieMatches} setSearchTitle={setSearchTitle}/>}
                 <OptionsModal visible={modalVisible}
                               toggleModal={toggleModal}
                               toggleDisc={toggleExcludeDisc}

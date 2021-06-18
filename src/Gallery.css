@@ -6,7 +6,6 @@
     justify-content: center;
     overflow: auto;
 }
-
 .posters-container {
     margin: auto;
     display: inline-flex;
@@ -16,17 +15,6 @@
     width: 85%;
     max-width: 1440px;
 }
-
-.gsheet-embed {
-    display: flex;
-    flex: 1 1 auto;
-    flex-wrap: wrap;
-    width: 80%;
-    margin: auto;
-    justify-content: center;
-    overflow: auto;
-}
-
 @media (orientation: portrait) {
     .posters-container {
         padding: 0;

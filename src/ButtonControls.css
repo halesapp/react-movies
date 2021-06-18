@@ -1,0 +1,44 @@
+.button-controls-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-bottom: .5em;
+}
+.button-control {
+    margin-left: 4px;
+    margin-right: 4px;
+    height: 100%;
+    display: flex;
+}
+a {
+    text-decoration: none;
+}
+.watch-icon {
+    height: 100%;
+}
+.button-control > div {
+    padding: 0 2px;
+    margin: 0;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+.hide {
+    display: none;
+}
+.button-group {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    height: 1.75em;
+}
+@media (orientation: portrait) {
+    .button-controls-container {
+        flex-direction: column;
+    }
+    .button-group {
+        flex-direction: row;
+        padding: 5px;
+    }
+}
