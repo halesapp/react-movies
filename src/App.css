@@ -9,21 +9,18 @@
     padding: 0;
     background-color: lightcyan;
 }
-
 h2 {
     text-align: center;
     margin: .5em
 }
-
 .controls-bar {
     background-color: lightgray;
     justify-content: center;
+    border-bottom: 2px black solid;
 }
-
 .buttons-container {
     padding-bottom: 4px;
 }
-
 .app {
     display: flex;
     flex-direction: column;
@@ -33,7 +30,6 @@ h2 {
     bottom: 0;
     position: absolute;
 }
-
 @media (orientation: portrait) {
     input {
         width: 90%;

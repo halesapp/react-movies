@@ -9,7 +9,6 @@ const TimeSearch = lazy(() => import('./TimeSearch'))
 const ButtonControls = lazy(() => import('./ButtonControls'))
 const Gallery = lazy(() => import('./Gallery'))
 const TableView = lazy(() => import('./TableView'))
-const OptionsButton = lazy(() => import('./OptionsButton'))
 const OptionsModal = lazy(() => import('./OptionsModal'))
 
 const URL_dbJSON = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSWb4mFDqo7FZkh5ov5juVw8i06_BRmJ9RdSBn5NFSlAzj_QoMW9f_W-NBvOmOTSk2SMxKLugIvuk44/pub?gid=0&single=true&output=csv"
@@ -152,10 +151,9 @@ const App = function () {
             <div className="app">
                 <div className="controls-bar">
                     <h2>Hales Movie Database</h2>
-                    <OptionsButton toggleModal={toggleModal}/>
                     <TitleSearch list={titlesList} value={searchTitle} set={setSearchTitle} count={movieMatches.filter(Boolean).length}/>
                     <TimeSearch list={timesList} value={searchTime} set={setSearchTime}/>
-                    <ButtonControls movie={searchTitle} db={db} chooseRandom={chooseRandom} setSearchTitle={setSearchTitle} viewMode={viewMode} setViewMode={setViewMode}/>
+                    <ButtonControls movie={searchTitle} db={db} chooseRandom={chooseRandom} toggleModal={toggleModal} setSearchTitle={setSearchTitle} viewMode={viewMode} setViewMode={setViewMode}/>
                 </div>
                 {viewMode === "gallery" ?
                     <Gallery imgHighRes={imgHighRes} titlesList={titlesList} db={db} postersVisible={movieMatches} setSearchTitle={setSearchTitle}/> :

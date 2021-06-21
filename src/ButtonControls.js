@@ -20,7 +20,8 @@ const ButtonControls = function (props) {
         <div className={"button-group"}>
             <button key={1} className={"button-control"} onClick={props.chooseRandom}><div>Random</div></button>
             <button key={2} className={"button-control"} onClick={() => props.setSearchTitle("")}><div>Clear</div></button>
-            <button key={3} className={"button-control"} onClick={() => {
+            <button key={3} className={"button-control"} onClick={() => props.toggleModal()}><div>Options</div></button>
+            <button key={4} className={"button-control"} onClick={() => {
                 props.viewMode === "gallery" ? props.setViewMode("table") : props.setViewMode("gallery")
             }}><div>View {props.viewMode === "gallery" ? "Table" : "Posters"}</div></button>
         </div>
