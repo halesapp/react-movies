@@ -31,7 +31,18 @@ const App = function () {
     const [viewMode, setViewMode] = useState("gallery")
 
     const fetchDataBase = function () {
+        // set DB to null to trigger loading screen
         setDb(null)
+        // check if there is a cached database
+        const cachedDB = JSON.parse(localStorage.getItem(localStorageItem))
+        if (cachedDB !== null) {
+            if ((Date.now() - cachedDB._UPDATED) < _24hours) {
+                delete cachedDB._UPDATED
+                setDb(cachedDB)
+                return
+            }
+        }
+        // otherwise fetch the new database
         fetch(URL_dbJSON)
             .then(res => {
                 return res.text()
@@ -62,14 +73,7 @@ const App = function () {
     }
 
     useEffect(() => {
-        const cachedDB = JSON.parse(localStorage.getItem(localStorageItem))
-        if (cachedDB !== null) {
-            if ((Date.now() - cachedDB._UPDATED) < _24hours) {
-                delete cachedDB._UPDATED
-                setDb(cachedDB)
-                return
-            }
-        }
+        document.onkeydown = (evt) => {if (evt.key === "Escape") setModalVisible(false)}
         fetchDataBase()
     }, [])
 
@@ -120,21 +124,13 @@ const App = function () {
         })
     }
 
-    const chooseRandom = function () {
-        setSearchTitle(titlesList[Math.round(Math.random() * titlesList.length)])
-    }
+    const chooseRandom = () => {setSearchTitle(titlesList[Math.round(Math.random() * titlesList.length)])}
 
-    const toggleModal = function () {
-        setModalVisible(prevState => {return !prevState})
-    }
+    const toggleModal = () => {setModalVisible(prevState => {return !prevState})}
 
-    const toggleExcludeDisc = function () {
-        setExcludeDisc(prevState => {return !prevState})
-    }
+    const toggleExcludeDisc = () => {setExcludeDisc(prevState => {return !prevState})}
 
-    const toggleImgRes = function () {
-        setImgHighRes(prevState => {return!prevState})
-    }
+    const toggleImgRes = () => {setImgHighRes(prevState => {return!prevState})}
 
     const downloadDB = function () {
         let link = document.createElement('a');

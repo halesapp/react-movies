@@ -3,7 +3,7 @@
     width: 100%;
     height: 100%;
     display: block;
-    transition: all ease-in-out .25s;
+    transition: all ease-in-out .3s;
     background: rgba(0,0,0,.7);
 }
 .modal-content {
