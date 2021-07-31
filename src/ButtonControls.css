@@ -1,8 +1,10 @@
 .button-controls-container {
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     padding-bottom: .5em;
+    overflow-x: auto;
 }
 .button-control {
     margin-left: 4px;
@@ -12,6 +14,9 @@
 }
 a {
     text-decoration: none;
+}
+a.faded {
+    opacity: 50%;
 }
 .watch-icon {
     height: 100%;
@@ -32,13 +37,5 @@ a {
     flex-direction: row;
     justify-content: center;
     height: 1.75em;
-}
-@media (orientation: portrait) {
-    .button-controls-container {
-        flex-direction: column;
-    }
-    .button-group {
-        flex-direction: row;
-        padding: 5px;
-    }
+    padding: 2px 0;
 }

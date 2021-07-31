@@ -33,6 +33,7 @@ const App = function () {
     const fetchDataBase = function () {
         // set DB to null to trigger loading screen
         setDb(null)
+        setSearchTitle("")
         // check if there is a cached database
         const cachedDB = JSON.parse(localStorage.getItem(localStorageItem))
         if (cachedDB !== null) {
@@ -83,6 +84,7 @@ const App = function () {
         dbToCache["_UPDATED"] = Date.now()
         localStorage.setItem(localStorageItem, JSON.stringify(dbToCache))
         setTitlesList(Object.keys(db))
+        setSearchTitle(searchTitle)
     }, [db])
 
     useEffect(() => {
