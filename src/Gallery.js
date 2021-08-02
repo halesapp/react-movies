@@ -16,8 +16,8 @@ const Gallery = function (props) {
         })
 
     return (
-        <div className="gallery">
-            <div className="posters-container">
+        <div className={"gallery"}>
+            <div className={"posters-container"}>
                 {posters}
             </div>
         </div>

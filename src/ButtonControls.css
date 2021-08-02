@@ -11,12 +11,13 @@
     margin-right: 4px;
     height: 100%;
     display: flex;
+    align-items: center;
 }
 a {
     text-decoration: none;
 }
 a.faded {
-    opacity: 50%;
+    opacity: .5;
 }
 .watch-icon {
     height: 100%;
@@ -36,6 +37,6 @@ a.faded {
     display: flex;
     flex-direction: row;
     justify-content: center;
-    height: 1.75em;
+    height: 2em;
     padding: 2px 0;
 }

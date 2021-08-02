@@ -126,7 +126,7 @@ const App = function () {
         })
     }
 
-    const chooseRandom = () => {setSearchTitle(titlesList[Math.round(Math.random() * titlesList.length)])}
+    const random = () => {setSearchTitle(titlesList[Math.round(Math.random() * titlesList.length)])}
 
     const toggleModal = () => {setModalVisible(prevState => {return !prevState})}
 
@@ -151,7 +151,7 @@ const App = function () {
                     <h2>Hales Movie Database</h2>
                     <TitleSearch list={titlesList} value={searchTitle} set={setSearchTitle} count={movieMatches.filter(Boolean).length}/>
                     <TimeSearch list={timesList} value={searchTime} set={setSearchTime}/>
-                    <ButtonControls movie={searchTitle} db={db} chooseRandom={chooseRandom} toggleModal={toggleModal} setSearchTitle={setSearchTitle} viewMode={viewMode} setViewMode={setViewMode}/>
+                    <ButtonControls movie={searchTitle} db={db} random={random} toggleModal={toggleModal} setSearchTitle={setSearchTitle} viewMode={viewMode} setViewMode={setViewMode}/>
                 </div>
                 {viewMode === "gallery" ?
                     <Gallery imgHighRes={imgHighRes} titlesList={titlesList} db={db} postersVisible={movieMatches} setSearchTitle={setSearchTitle}/> :
