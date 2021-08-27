@@ -18,6 +18,7 @@ const _24hours = 86400000
 const App = function () {
     const [db, setDb] = useState(null)
     const [titlesList, setTitlesList] = useState([])
+    const [randomList, setRandomList] = useState([])
     const [timesList, setTimesList] = useState([])
     const [discOnlyList, setDiscOnlyList] = useState(null)
 
@@ -84,6 +85,7 @@ const App = function () {
         dbToCache["_UPDATED"] = Date.now()
         localStorage.setItem(localStorageItem, JSON.stringify(dbToCache))
         setTitlesList(Object.keys(db))
+        setRandomList(Object.keys(db))
         setSearchTitle(searchTitle)
     }, [db])
 
@@ -126,7 +128,20 @@ const App = function () {
         })
     }
 
-    const random = () => {setSearchTitle(titlesList[Math.round(Math.random() * titlesList.length)])}
+    const random = () => {
+        const mixCount = 15
+        let arr = randomList.slice(0)
+        let count = 0
+        while (count < mixCount) {
+            for (let i = arr.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [arr[i], arr[j]] = [arr[j], arr[i]];
+            }
+            count = count + 1
+        }
+        setRandomList(arr)
+        setSearchTitle(arr[Math.round(Math.random() * arr.length)])
+    }
 
     const toggleModal = () => {setModalVisible(prevState => {return !prevState})}
 
@@ -148,7 +163,7 @@ const App = function () {
         <Suspense fallback={<LoadingScreen message={"Loading display..."}/>}>
             <div className="app">
                 <div className="controls-bar">
-                    <h2>Hales Movie Database</h2>
+                    <h2>Hales Movie Library</h2>
                     <TitleSearch list={titlesList} value={searchTitle} set={setSearchTitle} count={movieMatches.filter(Boolean).length}/>
                     <TimeSearch list={timesList} value={searchTime} set={setSearchTime}/>
                     <ButtonControls movie={searchTitle} db={db} random={random} toggleModal={toggleModal} setSearchTitle={setSearchTitle} viewMode={viewMode} setViewMode={setViewMode}/>
