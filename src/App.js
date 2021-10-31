@@ -87,6 +87,7 @@ const App = function () {
         setTitlesList(Object.keys(db))
         setRandomList(Object.keys(db))
         setSearchTitle(searchTitle)
+    // eslint-disable-next-line
     }, [db])
 
     useEffect(() => {
@@ -98,6 +99,7 @@ const App = function () {
         setDiscOnlyList(titlesList.map(title => {
             return Boolean(db[title].disc && !db[title].onGoogle && !db[title].onFandango)
         }))
+    // eslint-disable-next-line
     }, [titlesList])
 
     useEffect(() => {
@@ -113,6 +115,7 @@ const App = function () {
         setMovieMatches(titleMatches.map((item, index) => {
             return item && timeMatches[index] && (excludeDisc ? !discOnlyList[index] : true)
         }))
+    // eslint-disable-next-line
     }, [searchTitle, searchTime, excludeDisc])
 
     const searchByTitle = function (searchStr) {

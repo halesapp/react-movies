@@ -8,6 +8,7 @@ const TimeSearch = function (props) {
 
     useEffect(() => {
         props.set(maxTime)
+    // eslint-disable-next-line
     }, [props.list])
 
     return (
