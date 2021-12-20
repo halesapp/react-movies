@@ -2,7 +2,7 @@ import React from "react"
 
 import "./LoadingScreen.css"
 
-const LoadingScreen = function (props) {
+const LoadingScreen = (props) => {
     return (
         <div className={"loading-icon"}>
             <svg viewBox="0 0 24 24" fill="currentColor" height="20%" width="20%">

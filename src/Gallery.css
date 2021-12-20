@@ -1,4 +1,4 @@
-.gallery {
+.gallery-wrapper {
     display: flex;
     flex: 1 1 auto;
     flex-wrap: wrap;
@@ -6,7 +6,7 @@
     justify-content: center;
     overflow: auto;
 }
-.posters-container {
+.gallery {
     margin: auto;
     display: inline-flex;
     flex-wrap: wrap;

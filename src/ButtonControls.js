@@ -9,13 +9,11 @@ const URL_pageTMDB = "https://themoviedb.org/movie/";
 const URL_searchGoogle = "https://play.google.com/store/search?c=movies&q=";
 const URL_searchVudu = "https://www.vudu.com/content/movies/search?searchString=";
 const URL_searchIMDB = "https://www.imdb.com/find?q=";
-const rel = "noopener noreferrer"
-const target = "_blank"
 const bClass = "button-control"
 
 const WatchButton = (props) => {
     const button = <button className={bClass} disabled={!props.show}>{props.children}</button>
-    if (props.show && props.href) return <a href={props.href} target={target} rel={rel}>{button}</a>
+    if (props.show && props.href) return <a href={props.href} target={"_blank"} rel={"noopener noreferrer"}>{button}</a>
     return button
 }
 
@@ -25,9 +23,6 @@ const ButtonControls = function (props) {
             <button className={bClass} onClick={props.random}><div>Random</div></button>
             <button className={bClass} onClick={() => props.setSearchTitle("")}><div>Clear</div></button>
             <button className={bClass} onClick={() => props.toggleModal()}><div>Options</div></button>
-            <button className={bClass} onClick={() => {
-                props.viewMode === "gallery" ? props.setViewMode("table") : props.setViewMode("gallery")
-            }}><div>View {props.viewMode === "gallery" ? "Table" : "Posters"}</div></button>
         </div>
 
     let WatchControls = null

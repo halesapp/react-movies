@@ -2,12 +2,12 @@ import React from "react"
 
 import "./MoviePoster.css"
 
-const MoviePoster = function (props) {
+const MoviePoster = (props) => {
+    const classes = `poster-div${!props.visible ? props.animateSearch ? " disappear" : " hidden" : ""}${props.large ? " sole" : ""}`
     return (
-        <div className={"poster-wrapper"}
-             style={{"display": props.visible ? "inline-flex" : "none"}}
+        <div className={classes}
              title={props.title}
-             onClick={() => {props.click(props.title)}} >
+             onClick={() => {if (props.visible) props.click(props.title)}}>
             <img loading={"lazy"}
                  alt={"movie-poster"}
                  className={"poster-img"}
