@@ -31,7 +31,7 @@ const shuffle = (arr, mixes = 15, recurse = true) => {
     return recurse ? shuffle(a, mixes,false) : a
 }
 
-const csvStringToJSON = (csvString) => {
+const csvStrToJSON = (csvString) => {
     let newDB = {}
     const arrayData = csvString.split('\r\n')
     const labels = arrayData[0].split(",")
@@ -59,9 +59,9 @@ const App = () => {
     const [titlesList, setTitlesList] = useState([])
     const [randomList, setRandomList] = useState([])
     const [timesList, setTimesList] = useState([])
-
-    // search/filter parameters
     const [movieMatches, setMovieMatches] = useState([])
+
+    // search/filter input state
     const [searchTitle, setSearchTitle] = useState("")
     const [searchTime, setSearchTime] = useState(0)
 
@@ -91,7 +91,7 @@ const App = () => {
         fetch(CSV_DB_URL)
           .then(res => res.text())
           .then(csvData => {
-              const newDB = csvStringToJSON(csvData)
+              const newDB = csvStrToJSON(csvData)
               setDb(JSON.parse(JSON.stringify(newDB)))
               newDB["_UPDATED"] = Date.now()
               localStorage.setItem(localStorageItem, JSON.stringify(newDB))
@@ -112,10 +112,10 @@ const App = () => {
         if (excludeDisc) titles = titles.filter(a => !Boolean(db[a].disc && !db[a].onGoogle && !db[a].onVudu))
 
         setTitlesList(titles)
-        setRandomList(shuffle(shuffle(titles)))
-        setSearchTitle("")
-        setTimesList(titles.map(item => Number(db[item].time)))
+        setRandomList(titles)
+        setTimesList(titles.map(a => Number(db[a].time)))
         setMovieMatches(Array(titles.length).fill(true))
+        setSearchTitle("")
     }, [db, alphabetize, excludeDisc])
 
     useEffect(() => {
@@ -139,11 +139,11 @@ const App = () => {
     const togImgRes = () => setImgHighRes(prevState => !prevState)
     const togAnimate = () => setAnimateSearch(prevState => !prevState)
     const togAlphabetize = () => setAlphabetize(prevState => !prevState)
-    const filterByTime = (maxTime) => timesList.map(time => time <= maxTime)
+    const filterByTime = (a) => timesList.map(time => time <= a)
     const chooseRandom = (a) => setSearchTitle(a[Math.round(Math.random() * a.length)])
 
     const randomButton = () => {
-        const newMix = shuffle(shuffle(randomList))
+        const newMix = shuffle(randomList)
         setRandomList(newMix)
         chooseRandom(newMix)
     }
