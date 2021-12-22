@@ -1,6 +1,6 @@
 {
   "name": "movies",
-  "version": "0.28.0",
+  "version": "0.29.0",
   "homepage": "https://movies.rileyhales.com",
   "private": true,
   "dependencies": {
@@ -32,8 +32,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "devDependencies": {
-    "gh-pages": "^3.2.0"
   }
 }
