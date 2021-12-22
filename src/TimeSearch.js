@@ -14,7 +14,7 @@ const TimeSearch = (props) => {
     return (
       <div className={"time-search-box"}>
           <p>Time:</p>
-          <input className={"time-search-input"} type={"range"} min={interval} max={maxTime} step={interval} aria-label={"filter results by time length"}
+          <input className={"time-search-input"} type={"range"} min={interval} max={maxTime} step={interval} aria-label={"filter by runtime"}
                  onChange={event => {props.set(event.target.value)}} value={props.value}/>
           <p>{props.value === Infinity ? "" : props.value} min</p>
       </div>)

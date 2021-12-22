@@ -14,7 +14,7 @@ const Gallery = (props) => {
               {
                   props.titlesList.map(
                     (movie, index) => <MoviePoster key={index}
-                                                   src={`${posterBaseUrl}${props.db[movie].poster}.jpg`}
+                                                   src={`${posterBaseUrl}${props.db[movie].img}.jpg`}
                                                    visible={props.postersVisible[index]}
                                                    title={movie}
                                                    click={props.setSearchTitle}

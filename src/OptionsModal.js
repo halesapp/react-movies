@@ -12,9 +12,8 @@ const OptionsModal = (props) => {
               </div>
               <div className={"modal-body"}>
                   <button className={"modal-button"} onClick={() => {
-                      localStorage.setItem(props.localItem, null);
                       props.toggleModal()
-                      props.fetchDB()
+                      props.fetchDB(true)
                   }}>Refresh List
                   </button>
                   <br/>
@@ -24,33 +23,41 @@ const OptionsModal = (props) => {
                       <button className={"modal-button"}>View Google Sheet</button>
                   </a>
 
-                  <button className={"modal-button"} onClick={props.downloadDB}>Download Database JSON</button>
-
                   <div className={"modal-div"}>
-                      <div className={"modal-opt-label"}>Exclude movies on Disc:</div>
+                      <div className={"modal-opt-label"}>Exclude Movies on Disc:</div>
                       <label className="switch">
-                          <input type="checkbox" onChange={() => props.toggleDisc()} value={props.filterDisc} aria-label={"toggle disc only movies in results"}/>
+                          <input type="checkbox" onChange={() => props.togExclDisc()} value={props.filterDisc} aria-label={"toggle disc only movies in results"}/>
                           <span className="slider"/>
                       </label>
                   </div>
                   <div className={"modal-div"}>
-                      <div className={"modal-opt-label"}>Show higher res images:</div>
+                      <div className={"modal-opt-label"}>Use High Res Images:</div>
                       <label className="switch">
-                          <input type="checkbox" onChange={() => props.toggleImgRes()} value={props.imgHighRes} aria-label={"toggle high res image posters"}/>
+                          <input type="checkbox" onChange={() => props.togImgRes()} value={props.imgHighRes} aria-label={"toggle high res image posters"}/>
                           <span className="slider"/>
                       </label>
                   </div>
                   <div className={"modal-div"}>
                       <div className={"modal-opt-label"}>Enable Search Animations:</div>
                       <label className="switch">
-                          <input type="checkbox" onChange={() => props.toggleAnimateSearch()} value={props.animateSearch} aria-label={"toggle search animations"}/>
+                          <input type="checkbox" onChange={() => props.togAnimate()} value={props.animateSearch} aria-label={"toggle search animations"}/>
+                          <span className="slider"/>
+                      </label>
+                  </div>
+                  <div className={"modal-div"}>
+                      <div className={"modal-opt-label"}>Display Posters Alphabetically:</div>
+                      <label className="switch">
+                          <input type="checkbox" onChange={() => props.togAlphabetize()} value={props.alphabetize} aria-label={"toggle alphabetical"}/>
                           <span className="slider"/>
                       </label>
                   </div>
               </div>
 
               <div className={"modal-footer"}>
-                  <button className={"modal-button"} onClick={() => {props.toggleModal()}}>Close Modal</button>
+                  <button className={"modal-button"} onClick={() => {
+                      props.toggleModal()
+                  }}>Close Modal
+                  </button>
               </div>
           </div>
       </div>
