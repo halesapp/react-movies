@@ -9,6 +9,7 @@ const OptionsModal = (props) => {
               <div className={"modal-head"}>
                   <h2 className={"modal-title"}>Advanced Options</h2>
                   <div>&copy; Riley Hales, 2021, {process.env.REACT_APP_VERSION}</div>
+                  <div>Movie posters provided by <a href={"https://tmdb.org"} target={"_blank"} rel={"noopener noreferrer"}>TMDb</a></div>
               </div>
               <div className={"modal-body"}>
                   <button className={"modal-button"} onClick={() => {
@@ -26,28 +27,28 @@ const OptionsModal = (props) => {
                   <div className={"modal-div"}>
                       <div className={"modal-opt-label"}>Exclude Movies on Disc:</div>
                       <label className="switch">
-                          <input type="checkbox" onChange={() => props.togExclDisc()} value={props.filterDisc} aria-label={"toggle disc only movies in results"}/>
+                          <input type="checkbox" onChange={() => props.togExclDisc()} checked={props.filterDisc} aria-label={"hide disc only movies"}/>
                           <span className="slider"/>
                       </label>
                   </div>
                   <div className={"modal-div"}>
                       <div className={"modal-opt-label"}>Use High Res Images:</div>
                       <label className="switch">
-                          <input type="checkbox" onChange={() => props.togImgRes()} value={props.imgHighRes} aria-label={"toggle high res image posters"}/>
+                          <input type="checkbox" onChange={() => props.togImgRes()} checked={props.imgHighRes} aria-label={"toggle high res images"}/>
                           <span className="slider"/>
                       </label>
                   </div>
                   <div className={"modal-div"}>
                       <div className={"modal-opt-label"}>Enable Search Animations:</div>
                       <label className="switch">
-                          <input type="checkbox" onChange={() => props.togAnimate()} value={props.animateSearch} aria-label={"toggle search animations"}/>
+                          <input type="checkbox" onChange={() => props.togAnimate()} checked={props.animateSearch} aria-label={"toggle search animations"}/>
                           <span className="slider"/>
                       </label>
                   </div>
                   <div className={"modal-div"}>
-                      <div className={"modal-opt-label"}>Display Posters Alphabetically:</div>
+                      <div className={"modal-opt-label"}>Show Posters Alphabetically:</div>
                       <label className="switch">
-                          <input type="checkbox" onChange={() => props.togAlphabetize()} value={props.alphabetize} aria-label={"toggle alphabetical"}/>
+                          <input type="checkbox" onChange={() => props.togAlphabetize()} checked={props.alphabetize} aria-label={"toggle alphabetical"}/>
                           <span className="slider"/>
                       </label>
                   </div>

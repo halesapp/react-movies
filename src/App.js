@@ -14,7 +14,7 @@ const CSV_DB_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSWb4mFDqo7F
 const localStorageItem = "halesMovieDB"
 const _10daysInMilliseconds = 864000000
 
-const shuffle = (arr, mixes = 15) => {
+const shuffle = (arr, mixes = 15, recurse = true) => {
     let a = arr.slice(0)
     // cut the deck
     const midPoint = Math.floor(a.length / 2)
@@ -28,7 +28,7 @@ const shuffle = (arr, mixes = 15) => {
         }
         mixNum = mixNum + 1
     }
-    return a
+    return recurse ? shuffle(a, mixes,false) : a
 }
 
 const csvStringToJSON = (csvString) => {
@@ -59,7 +59,6 @@ const App = () => {
     const [titlesList, setTitlesList] = useState([])
     const [randomList, setRandomList] = useState([])
     const [timesList, setTimesList] = useState([])
-    const [discOnlyList, setDiscOnlyList] = useState(null)
 
     // search/filter parameters
     const [movieMatches, setMovieMatches] = useState([])
@@ -82,12 +81,10 @@ const App = () => {
         // check if there is a cached database
         if (!overwrite) {
             const cachedDB = JSON.parse(localStorage.getItem(localStorageItem))
-            if (cachedDB !== null) {
-                if ((Date.now() - cachedDB._UPDATED) < _10daysInMilliseconds) {
+            if (cachedDB !== null && Date.now() - cachedDB._UPDATED < _10daysInMilliseconds) {
                     delete cachedDB._UPDATED
                     setDb(cachedDB)
                     return
-                }
             }
         }
         // otherwise fetch the new database
@@ -99,7 +96,7 @@ const App = () => {
               newDB["_UPDATED"] = Date.now()
               localStorage.setItem(localStorageItem, JSON.stringify(newDB))
           })
-          .catch(err => console.log(err))
+          .catch(() => alert("Unable to retrieve Movie Database"))
     }
 
     useEffect(() => {
@@ -109,32 +106,30 @@ const App = () => {
 
     useEffect(() => {
         if (db === null) return
+
         let titles = Object.keys(db).slice(0)
         if (!alphabetize) titles = shuffle(titles)
-        setTitlesList(titles.slice(0))
+        if (excludeDisc) titles = titles.filter(a => !Boolean(db[a].disc && !db[a].onGoogle && !db[a].onVudu))
+
+        setTitlesList(titles)
         setRandomList(shuffle(shuffle(titles)))
         setSearchTitle("")
         setTimesList(titles.map(item => Number(db[item].time)))
-        setDiscOnlyList(titles.map(title => Boolean(db[title].disc && !db[title].onGoogle && !db[title].onVudu)))
         setMovieMatches(Array(titles.length).fill(true))
-    }, [db, alphabetize])
+    }, [db, alphabetize, excludeDisc])
 
     useEffect(() => {
         if (movieMatches.length === 0) return
-        let titleMatches
-        if (searchTitle === "") {
-            titleMatches = Array(titlesList.length).fill(true)
-        } else {
-            titleMatches = searchByTitle(searchTitle)
-        }
-        const timeMatches = searchByTime(searchTime)
-        setMovieMatches(titleMatches.map((item, index) => item && timeMatches[index] && (excludeDisc ? !discOnlyList[index] : true)))
+        let titleMatches = filterByTitle(searchTitle)
+        const timeMatches = filterByTime(searchTime)
+        setMovieMatches(titleMatches.map((item, index) => item && timeMatches[index]))
         // eslint-disable-next-line
-    }, [searchTitle, searchTime, excludeDisc])
+    }, [searchTitle, searchTime])
 
-    const searchByTitle = (searchStr) => {
+    const filterByTitle = (searchStr) => {
         // `.replace` on searchStr encodes regex special characters with backslashes
         // https://stackoverflow.com/questions/874709/converting-user-input-string-to-regular-expression
+        if (searchStr === "") return Array(titlesList.length).fill(true)
         const regexString = RegExp(`.*(${searchStr.replace(/[|\\{}()[\]^$+*?.]/g, '\\$&')}).*`, "i")
         return titlesList.map(item => regexString.test(item))
     }
@@ -144,7 +139,7 @@ const App = () => {
     const togImgRes = () => setImgHighRes(prevState => !prevState)
     const togAnimate = () => setAnimateSearch(prevState => !prevState)
     const togAlphabetize = () => setAlphabetize(prevState => !prevState)
-    const searchByTime = (maxTime) => timesList.map(time => time <= maxTime)
+    const filterByTime = (maxTime) => timesList.map(time => time <= maxTime)
     const chooseRandom = (a) => setSearchTitle(a[Math.round(Math.random() * a.length)])
 
     const randomButton = () => {
