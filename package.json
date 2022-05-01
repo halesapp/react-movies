@@ -1,13 +1,12 @@
 {
   "name": "movies",
-  "version": "0.29.0",
-  "homepage": "https://movies.rileyhales.com",
+  "version": "0.30.0",
+  "homepage": "https://movies.hales.app",
   "private": true,
   "dependencies": {
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
-    "react-scripts": "4.0.3",
-    "web-vitals": "^1.1.2"
+    "react": "^18.1.0",
+    "react-dom": "^18.1.0",
+    "react-scripts": "5.0.1"
   },
   "scripts": {
     "start": "react-scripts start",
